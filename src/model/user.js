@@ -63,6 +63,6 @@ const adminSchema = new mongoose.Schema({
 });
 
 export const Customer = mongoose.model("Customer",customerSchema);
-export const DeliveryPartner = mongoose.model("DeliveryPartner",deliveryPartner);
+export const DeliveryPartner = mongoose.model("DeliveryPartner",deliveryPartnerSchema);
 
 export const Admin = mongoose.model("Admin",adminSchema);
