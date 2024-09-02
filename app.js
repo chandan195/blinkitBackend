@@ -1,5 +1,3 @@
-
-
 import "dotenv/config";
 import fastify from "fastify";
 
@@ -10,14 +8,16 @@ import { buildAdminRouter } from "./src/config/setup.js";
 const start = async () => {
   await connectDB(process.env.MONGO_URI);
   const app = fastify();
- 
-await buildAdminRouter(app);
-   app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
-  // app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
+
+  await buildAdminRouter(app);
+  app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
+    // app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
     if (err) {
       console.error(err);
     } else {
-      console.log(`Blink it start on http://localhost:${PORT}${admin.options.rootPath}`);
+      console.log(
+        `Blink it start on http://localhost:${PORT}${admin.options.rootPath}`
+      );
     }
   });
 };
