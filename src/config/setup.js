@@ -1,9 +1,9 @@
 import AdminJS from "adminjs";
-import AdminJSFastify from "adminjs/fastify";
+import AdminJSFastify from "@adminjs/fastify";
 import * as AdminJsMongoose from "@adminjs/mongoose";
 import * as Models from "../model/index.js";
-import { Store } from "@fastify/session";
-import { authenticate, COOKIE_PASSWORD } from "./config.js";
+import store from "@fastify/session";
+import { authenticate, COOKIE_PASSWORD, sessionStore } from "./config.js";
 AdminJS.registerAdapter(AdminJsMongoose);
 
 export const admin = new AdminJS({
@@ -38,18 +38,18 @@ export const admin = new AdminJS({
   rootPath: "/admin",
 });
 
-export const buildAdminRoter = async (app) => {
-  await AdminJSFastify.buildAutheticatedRoter(admin, {
+export const buildAdminRouter = async (app) => {
+  await AdminJSFastify.buildAutheticatedRouter(admin, {
    authenticate,
    cookiePassword :COOKIE_PASSWORD,
    cookieName:"adminjs", 
   }, app, {
-    Store: session,
+    store: sessionStore,
     saveUnintialized :true,
     secret :COOKIE_PASSWORD,
     cookie:{
-        httpOnly:process.env.NODE_ENV !== 'production',
-        secure:process.env.NODE_ENV !== 'production',
+        httpOnly:process.env.NODE_ENV === 'production',
+        secure:process.env.NODE_ENV === 'production',
     }
   });
 };
