@@ -4,6 +4,7 @@ import * as AdminJsMongoose from "@adminjs/mongoose";
 import * as Models from "../model/index.js";
 import store from "@fastify/session";
 import { authenticate, COOKIE_PASSWORD, sessionStore } from "./config.js";
+import { dark, light, noSidebar } from "@adminjs/themes";
 AdminJS.registerAdapter(AdminJsMongoose);
 
 export const admin = new AdminJS({
@@ -32,9 +33,14 @@ export const admin = new AdminJS({
     { resource: Models.Branch },
   ],
   branding: {
-    companyName: "Blinkit",
+    companyName: " ##Blinkit**",
     withMadeWithLove: false,
-  },
+    favicon:
+    "https://res.cloudinary.com/dponzgerb/image/upload/v1722852076/s32qztc3slzqukdletgj.png",
+  logo: "https://res.cloudinary.com/dponzgerb/image/upload/v1722852076/s32qztc3slzqukdletgj.png",
+},
+defaultTheme: dark.id,
+availableThemes: [dark, light, noSidebar],
   rootPath: "/admin",
 });
 
