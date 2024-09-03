@@ -16,7 +16,7 @@ const start = async () => {
       console.error(err);
     } else {
       console.log(
-        `Blink it start on http://localhost:${PORT}${admin.options.rootPath}`
+        `Blink it start on http://localhost:${PORT}`
       );
     }
   });
