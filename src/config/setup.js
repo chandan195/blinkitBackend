@@ -39,7 +39,9 @@ export const admin = new AdminJS({
 });
 
 export const buildAdminRouter = async (app) => {
-  await AdminJSFastify.buildAutheticatedRouter(admin, {
+
+
+  await AdminJSFastify.buildAuthenticatedRouter(admin, {
    authenticate,
    cookiePassword :COOKIE_PASSWORD,
    cookieName:"adminjs", 
