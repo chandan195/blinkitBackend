@@ -17,3 +17,8 @@ AdminJS is an automatic admin interface which can be plugged into your applicati
  # adminjs/mongoose
 This is an official AdminJS adapter which integrates mongoose ORM into AdminJS.
 
+# adminjs dashbord
+# http://localhost:3000/admin
+   
+   email: admin@gmail.com
+   password: admin12345678
