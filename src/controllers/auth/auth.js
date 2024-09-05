@@ -78,25 +78,63 @@ export const refreshToken = async (req, reply) => {
   try {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-    let user ;
-    
-    if(decoded.role==="Customer") {
-      user =await Customer.findById(decoded.userId);
+    let user;
 
-    } else if(decoded.role==="DeliveryPartner"){
-      user =await DeliveryPartner.findById(decoded.userId);
+    if (decoded.role === "Customer") {
+      user = await Customer.findById(decoded.userId);
+    } else if (decoded.role === "DeliveryPartner") {
+      user = await DeliveryPartner.findById(decoded.userId);
     } else {
       return reply.status(403).send({ message: "Invalid role", error });
     }
 
-  if(!user) {
-    return reply.status(403).send({ message: "Invalid refresh token", error });
-  }
+    if (!user) {
+      return reply
+        .status(403)
+        .send({ message: "Invalid refresh token", error });
+    }
 
-  const { accessToken , refreshToken :newRefreshToken } = generateToken(user);
-return reply.send({ message:"Refresh token is ", accessToken, refreshToken:newRefreshToken})
-
+    const { accessToken, refreshToken: newRefreshToken } = generateToken(user);
+    return reply.send({
+      message: "Refresh token is ",
+      accessToken,
+      refreshToken: newRefreshToken,
+    });
   } catch (error) {
     return reply.status(403).send({ message: "Invalid refresh token", error });
   }
 };
+
+
+export const fetchUser =  async(req , reply)=>{
+
+  try {
+    const {userId ,role} =req.user;
+    let user;
+
+    if (decoded.role === "Customer") {
+      user = await Customer.findById(decoded.userId);
+    } else if (decoded.role === "DeliveryPartner") {
+      user = await DeliveryPartner.findById(decoded.userId);
+    } else {
+      return reply.status(403).send({ message: "Invalid role", error });
+    }
+
+
+
+    if (!user) {
+      return reply
+        .status(404)
+        .send({ message: "User not found", error });
+    }
+
+
+    return reply.send({
+      message: "user fetched successfully ",
+     user,
+    });
+    
+  } catch (error) {
+     return reply.status(500).send({ message: "An Error occurred"  , error });
+  }
+}
