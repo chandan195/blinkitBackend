@@ -13,21 +13,18 @@ const start = async () => {
   const app = fastify();
 
   app.register(fastifySocketIO, {
-    cors:{
-      origin:'*',
+    cors: {
+      origin: "*",
     },
-    pingInterval:10000,
-    pingTimeout:5000,
-    transports:['websocket']
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    transports: ["websocket"],
   });
 
-await registerRoute(app);
+  await registerRoute(app);
 
-  const admin = new AdminJS({})
+  const admin = new AdminJS({});
   await buildAdminRouter(app);
-
-
-
 
   app.listen({ port: PORT }, (err, addr) => {
     // app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
@@ -40,22 +37,20 @@ await registerRoute(app);
     }
   });
 
-  app.ready().then(()=>{
-    app.io.on("connection",(socket)=>{
+  app.ready().then(() => {
+    app.io.on("connection", (socket) => {
       console.log("A user connected");
 
-      socket.on("joinRoom" ,(orderId)=>{
+      socket.on("joinRoom", (orderId) => {
         socket.join(orderId);
         console.log(`User Joined room ${orderId}`);
-      })
+      });
 
-      socket.on("disconnect" ,()=>{
-       
-        console.log('user disconnected ');
-      })
-
-    })
-  })
+      socket.on("disconnect", () => {
+        console.log("user disconnected ");
+      });
+    });
+  });
 };
 
 start();
