@@ -1,5 +1,5 @@
-import { Order } from "../../model/order.js";
-import { Branch } from "../../model/branch.js";
+import Order from "../../model/order.js";
+import Branch  from "../../model/branch.js";
 import { Customer, DeliveryPartner } from "../../model/user.js";
 
 export const createOrder = async (req, reply) => {
@@ -113,6 +113,57 @@ export const updateOrderStatus = async (req, reply) => {
     await order.save();
 
     return reply.send(order);
+  } catch (error) {
+    return reply
+      .status(500)
+      .send({ message: "Failed to update status", error: error });
+  }
+};
+
+export const getOrders = async (req, reply) => {
+  try {
+    const { status, customerId, deliveryPartnerId, branchId } = req.query;
+    let query = {};
+    if (status) {
+      query.status = status;
+    }
+
+    if (customerId) {
+      query.customer= customerId;
+    }
+    if (deliveryPartnerId) {
+      query.deliveryPartner = deliveryPartnerId;
+      query.branch = branchId;
+    }
+
+    const orders =await Order.find(query).populate(
+      "customer  branch items.item  deliveryPartner"
+    );
+
+    return reply.send(orders);
+    
+  } catch (error) {
+    return reply
+      .status(500)
+      .send({ message: "Failed to update status", error: error });
+  }
+};
+
+
+export const getOrderById = async (req, reply) => {
+  try {
+    const { orderId } = req.params;
+  
+
+    const order =await Order.findById(orderId ).populate(
+      "customer  branch items.item  deliveryPartner"
+    );
+
+    if(!order){
+      return reply.status(404).send({ message: "Order not found", })
+    }
+    return reply.send(order);
+    
   } catch (error) {
     return reply
       .status(500)
