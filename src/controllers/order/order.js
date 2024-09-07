@@ -7,7 +7,7 @@ export const createOrder = async (req, reply) => {
     const { userId } = req.user;
     const { items, branch, totalPrice } = req.body;
     const customerData = await Customer.findById(userId);
-    const branchData = await Branch.find(branch);
+    const branchData = await Branch.findById(branch);
 
     if (!customerData) {
       return reply.status(404).send({ message: "Customer not found" });
